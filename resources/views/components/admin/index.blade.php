@@ -2,7 +2,7 @@
   <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
       <div class="mx-auto max-w-screen-sm">
           <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Our team</h2>
-          <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">Explore our official Neutron Purbalingga team! Now you can start managing beautifully</p>
+          <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">Explore our official Neutron Sokaraja team! Now you can start managing beautifully</p>
       </div> 
         <div class="my-6">
             <form class="flex items-center max-w-md mx-auto" method="GET">
@@ -104,7 +104,7 @@
                             <p class="text-base font-semibold leading-none text-gray-900 dark:text-white">
                                 <a href="#">{{ $pengajar['name'] }}</a>
                             </p>
-                            <p class="mb-4 text-sm">Official Neutron Purbalingga tutor <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">{{ $pengajar['email'] }}</a></p>
+                            <p class="mb-4 text-sm">Official Neutron Sokaraja tentor <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">{{ $pengajar['email'] }}</a></p>
                             <ul class="flex text-sm">
                                 <li class="me-2">
                                     <a href="#" class="hover:underline">

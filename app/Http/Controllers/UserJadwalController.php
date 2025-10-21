@@ -14,7 +14,8 @@ class UserJadwalController extends Controller
     public function index()
     {
         $jadwal = Schedule::where('pengajar_id', '=', Auth::user()->id)->paginate(10)->withQueryString();
-        return view ('user.jadwal', ['header' => 'Schedule', 'jadwal' => $jadwal]);
+        $tanggal = date('Y-m-d');
+        return view ('user.jadwal', ['header' => 'Schedule', 'jadwal' => $jadwal, 'hari' => $tanggal]);
     }
 
     /**

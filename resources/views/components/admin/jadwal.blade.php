@@ -11,29 +11,9 @@
           </h1>
         </div>
         <!-- End Title -->
-
-        <div class="mt-5 max-w-3xl">
+        <div class="mt-5 max-w-3xl mb-8">
           <p class="text-lg text-gray-600 dark:text-neutral-400">Preline UI is an open-source set of prebuilt UI components, ready-to-use examples and Figma design system based on the utility-first Tailwind CSS framework.</p>
         </div>
-
-        <!-- Buttons -->
-        <div class="mt-8 gap-3 flex justify-center">
-          <a class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" href="#">
-            Get started
-            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-          </a>
-          <a class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
-            <svg class="shrink-0 size-4" width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6.875 18C8.531 18 9.875 16.656 9.875 15V12H6.875C5.219 12 3.875 13.344 3.875 15C3.875 16.656 5.219 18 6.875 18Z" fill="#0ACF83"></path>
-              <path d="M3.875 9C3.875 7.344 5.219 6 6.875 6H9.875V12H6.875C5.219 12 3.875 10.656 3.875 9Z" fill="#A259FF"></path>
-              <path d="M3.875 3C3.875 1.344 5.219 0 6.875 0H9.875V6H6.875C5.219 6 3.875 4.656 3.875 3Z" fill="#F24E1E"></path>
-              <path d="M9.87501 0H12.875C14.531 0 15.875 1.344 15.875 3C15.875 4.656 14.531 6 12.875 6H9.87501V0Z" fill="#FF7262"></path>
-              <path d="M15.875 9C15.875 10.656 14.531 12 12.875 12C11.219 12 9.87501 10.656 9.87501 9C9.87501 7.344 11.219 6 12.875 6C14.531 6 15.875 7.344 15.875 9Z" fill="#1ABCFE"></path>
-            </svg>
-            Preline Figma
-          </a>
-        </div>
-        <!-- End Buttons -->
 
         <!-- Start block -->
         <!-- Start coding here -->
@@ -129,7 +109,7 @@
                 </table>
             </div>
             @if ($schedules->hasPages())
-                <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+                <nav class="py-1.5 px-4" aria-label="Table navigation">
                     {{ $schedules->links() }}
                 </nav>
             @endif
@@ -269,3 +249,76 @@
       </div>
     </div>
 </div>
+@push('jadwal')
+    <script>
+    (function(){
+    const input = document.querySelector('#simple-search');
+    const tbody = document.querySelector('table tbody');
+
+    if (!input || !tbody) return;
+    let rows = Array.from(tbody.querySelectorAll('tr'));
+    const originalCellHtml = new WeakMap();
+    rows.forEach(row => {
+        const cells = Array.from(row.children);
+        originalCellHtml.set(row, cells.map(c => c.innerHTML));
+    });
+    const noResultRow = document.createElement('tr');
+    noResultRow.className = 'no-results';
+    const colCount = document.querySelectorAll('table thead th').length || 8;
+    noResultRow.innerHTML = `<td colspan="${colCount}" class="text-center py-4 text-red-400">Data tidak ada</td>`;
+    noResultRow.style.display = 'none';
+    tbody.appendChild(noResultRow);
+    function debounce(fn, wait = 250){
+        let t;
+        return function(...args){
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+        }
+    }
+
+    function escapeRegex(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function searchHandler(){
+        const q = input.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        rows = Array.from(tbody.querySelectorAll('tr')).filter(r => !r.classList.contains('no-results'));
+
+        rows.forEach(row => {
+        const originals = originalCellHtml.get(row);
+        const cells = Array.from(row.children);
+        if (originals && originals.length === cells.length) {
+            cells.forEach((cell, i) => cell.innerHTML = originals[i]);
+        }
+        const searchableCells = Array.from(row.children).slice(0, -1);
+        const hay = searchableCells.map(c => c.textContent.trim().toLowerCase()).join(' ');
+
+        if (q === '' || hay.indexOf(q) !== -1) {
+            row.style.display = '';
+            visibleCount++;
+            if (q !== '') {
+            const regex = new RegExp('(' + escapeRegex(q) + ')', 'ig');
+            searchableCells.forEach((cell, idx) => {
+                const origHtml = originals ? originals[idx] : cell.innerHTML;
+                try {
+                cell.innerHTML = origHtml.replace(regex, '<mark class="bg-yellow-200 text-black rounded px-[2px]">$1</mark>');
+                } catch (e) {
+                cell.innerHTML = origHtml;
+                }
+            });
+            }
+        } else {
+            row.style.display = 'none';
+        }
+        });
+        noResultRow.style.display = visibleCount === 0 ? '' : 'none';
+    }
+    const debouncedSearch = debounce(searchHandler, 300);
+    input.addEventListener('input', debouncedSearch);
+    input.addEventListener('search', debouncedSearch);
+    })();
+</script>
+
+@endpush

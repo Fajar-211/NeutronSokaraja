@@ -122,6 +122,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::post('/jadwal', [JadwalController::class, 'store']);
     Route::delete('/jadwal/{schedule}/hapus', [JadwalController::class, 'destroy']);
     Route::get('/edit/{schedule}', [JadwalController::class, 'edit']);
+    Route::patch('/update/{schedule}', [JadwalController::class, 'update']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

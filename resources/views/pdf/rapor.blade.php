@@ -115,7 +115,7 @@
             <img src="{{ public_path('img/neu.png') }}" alt="Logo">
             <p>Laporan Hasil Belajar</p>
         </div>
-        <div class="location">Purbalingga</div>
+        <div class="location">Sokaraja</div>
         <div>Periode {{ $bulan }} {{ $tahun }}</div>
     </div>
 
@@ -242,11 +242,11 @@
         <tr>
             <td style="width:50%; text-align:center; border:none;">
                 <p style="font-weight:bold;">Kepala Cabang</p>
-                <p style="margin-top:80px;">TRI SANTOSO</p>
+                <p style="margin-top:80px;">Nama Kacab</p>
             </td>
             <td style="width:50%; text-align:center; border:none;">
                 <p style="font-weight:bold;">Koordinator Pendidik</p>
-                <p style="margin-top:80px;">ARIYANTO TRI KUSUMO</p>
+                <p style="margin-top:80px;">Nama Koordinator</p>
             </td>
         </tr>
     </table>

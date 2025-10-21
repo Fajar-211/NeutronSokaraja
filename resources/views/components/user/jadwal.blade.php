@@ -3,16 +3,15 @@
   <!-- Grid -->
   <div class="grid lg:grid-cols-7 lg:gap-x-8 xl:gap-x-12 lg:items-center">
     <div class="lg:col-span-3">
-      <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl md:text-5xl lg:text-6xl dark:text-white">Build Better Schedule</h1>
-      <p class="mt-3 text-lg text-gray-800 dark:text-neutral-400">Introducing a new way for your brand to reach the creative community.</p>
+      <h1 class="block text-md font-light text-gray-800 sm:text-lg md:text-xl lg:text-3xl dark:text-white">Schedule <span class="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">TODAY</span> </h1>
+      <p class="mt-3 text-lg text-gray-800 dark:text-neutral-400">Every schedule is a new opportunity to grow and shine.</p>
 
-      <div class="mt-5 lg:mt-8 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
+      <div class="mt-3 lg:mt-8">
         <div class="w-full sm:w-auto">
-          <label for="hero-input" class="sr-only">Search</label>
-          <input type="text" id="hero-input" name="hero-input" class="py-2.5 sm:py-3 px-4 block w-full min-w-80 border-gray-200 rounded-md sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Enter work email">
+          <p class="px-2.5 font-light text-slate-400 italic">“The people who are crazy enough to think they can change the world are the ones who do.”</p>
         </div>
-        <a class="w-full sm:w-auto py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" href="#">
-          Request demo
+        <a class="w-full sm:w-auto my-2 py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" href="#nap">
+          See schedule
         </a>
       </div>
 
@@ -62,7 +61,7 @@
     <!-- End Col -->
 
     <div class="lg:col-span-4 mt-10 lg:mt-0 rounded-xl overflow-hidden hover:opacity-50 group transition-all">
-      <img class="w-full group-hover:scale-110 transition-all duration-700" src="{{ asset('img/time.jpg') }}" alt="Hero Image">
+      <img class="w-full group-hover:scale-110 transition-all duration-700" src="{{ asset('img/user.jpg') }}" alt="Hero Image">
     </div>
     <!-- End Col -->
   </div>
@@ -83,7 +82,6 @@
             </h2>
           </div>
           <!-- End Header -->
-
           <!-- Table -->
           <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
             <thead class="bg-gray-50 dark:bg-neutral-800">
@@ -128,6 +126,30 @@
 
             <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                 @forelse ($jadwals as $jadwal)
+                @if ($jadwal['tanggal'] == $tanggal)
+                <tr>
+                      <td class="size-px whitespace-nowrap px-6 py-3">
+                          <span class="text-sm text-gray-800 dark:text-neutral-200">{{ $loop->iteration + ($jadwals->firstItem() - 1) }}</span>
+                      </td>
+                      <td class="size-px whitespace-nowrap px-6 py-3">
+                          <div class="flex items-center gap-x-3">
+                              <span class="font-semibold text-sm text-gray-800 dark:text-white">{{ $jadwal->mapel->nama_mapel }}</span>
+                          </div>
+                      </td>
+                      <td class="size-px whitespace-nowrap px-6 py-3">
+                          <span class="text-sm text-gray-800 dark:text-white">{{ $jadwal['tanggal'] }}</span>
+                      </td>
+                      <td class="size-px whitespace-nowrap px-6 py-3">
+                          <span class="text-sm text-gray-800 dark:text-white">{{ $jadwal->kelas->kelas }}</span>
+                      </td>
+                      <td class="size-px whitespace-nowrap px-6 py-3">
+                          <span class="text-sm jam transition-all">{{ $jadwal->jam->start }}</span>
+                      </td>
+                      <td class="size-px whitespace-nowrap px-6 py-3">
+                          <span class="text-sm jam transition-all">{{ $jadwal->jam->end }}</span>
+                      </td>
+                </tr>
+              @else
                 <tr>
                     <td class="size-px whitespace-nowrap px-6 py-3">
                         <span class="text-sm text-gray-800 dark:text-neutral-200">{{ $loop->iteration + ($jadwals->firstItem() - 1) }}</span>
@@ -144,17 +166,18 @@
                         <span class="text-sm text-gray-800 dark:text-white">{{ $jadwal->kelas->kelas }}</span>
                     </td>
                     <td class="size-px whitespace-nowrap px-6 py-3">
-                        <span class="text-sm text-green-500">{{ $jadwal->jam->start }}</span>
+                        <span class="text-sm text-gray-500">{{ $jadwal->jam->start }}</span>
                     </td>
                     <td class="size-px whitespace-nowrap px-6 py-3">
-                        <span class="text-sm text-red-500">{{ $jadwal->jam->end }}</span>
+                        <span class="text-sm text-gray-500">{{ $jadwal->jam->end }}</span>
                     </td>
               </tr>
+                @endif
                 @empty
                     
                 @endforelse
               @if ($jadwals->hasPages())
-                <tr>
+                <tr id="nap">
                     <td colspan="5">{{ $jadwals->links() }}</td>
                 </tr>
               @endif
@@ -168,4 +191,13 @@
   <!-- End Card -->
 </div>
 <!-- End Table Section -->
+@push('waktu')
+  <script>
+    const box = document.querySelectorAll('.jam');
+    setInterval(()=>{
+      box[0].classList.toggle('text-green-500');
+      box[1].classList.toggle('text-red-500');
+    }, 1000);
+  </script>
+@endpush
 

@@ -12,7 +12,8 @@
             </a>
         </div>
         <!-- Modal body -->
-        <form action="/jadwal" method="POST">
+        <form action="/update/{{ $schedule['id'] }}" method="POST">
+            @method('PATCH')
             @csrf
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div>
@@ -20,7 +21,7 @@
                     <select id="pengajar" name="pengajar" class="@error('pengajar') border-red-500 @enderror bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option selected="" value="">Select Tentor</option>
                         @foreach (App\Models\User::where('is_admin','=', false)->get() as $pengajar)
-                            <option value="{{ $pengajar['id'] }}" @selected((old('pengajar') == $pengajar['id']) ?? $pengajar['id'])>{{ $pengajar['name'] }}</option>
+                            <option value="{{ old('pengajar') ?? $pengajar['id']  }}" @selected((old('pengajar') ?? $pengajar['id']) == $pengajar['id'])>{{ $pengajar['name'] }}</option>
                         @endforeach
                     </select>
                     @error('pengajar')
@@ -32,7 +33,7 @@
                     <select id="mapel" name="mapel" class="@error('mapel') border-red-500 @enderror bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option selected="" value="">Select Mapel</option>
                         @foreach (App\Models\Mapel::get() as $mapel)
-                            <option value="{{ $mapel['id'] }}" @selected(old('mapel') == $mapel['id'])>{{ $mapel['nama_mapel'] }}</option>
+                            <option value="{{ old('mapel') ?? $mapel['id']  }}" @selected((old('mapel') ?? $mapel['id']) == $mapel['id'])>{{ $mapel['nama_mapel'] }}</option>
                         @endforeach
                     </select>
                     @error('mapel')
@@ -44,7 +45,7 @@
                     <select id="kelas" name="kelas" class="@error('kelas') border-red-500 @enderror bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option selected="" value="">Select Kelas</option>
                         @foreach (App\Models\Kelas::get() as $kelas)
-                            <option value="{{ $kelas['id'] }}" @selected(old('kelas') == $kelas['id'])>{{ $kelas['kelas'] }}</option>
+                            <option value="{{ old('kelas') ?? $kelas['id']  }}"  @selected((old('kelas') ?? $kelas['id']) == $kelas['id'])>{{ $kelas['kelas'] }}</option>
                         @endforeach
                     </select>
                     @error('kelas')
@@ -56,7 +57,7 @@
                     <select id="jam" name="jam" class="@error('jam') border-red-500 @enderror bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option selected="" value="">Select Jam</option>
                         @foreach (App\Models\Jam::get() as $jam)
-                            <option value="{{ $jam['id'] }}" @selected(old('jam') == $jam['id'])>{{ $jam['start'] }} - {{ $jam['end'] }}</option>
+                            <option value="{{ old('jam') ?? $jam['id']  }}"  @selected((old('jam') ?? $jam['id']) == $jam['id'])>{{ $jam['start'] }} - {{ $jam['end'] }}</option>
                         @endforeach
                     </select>
                     @error('jam')
@@ -66,7 +67,7 @@
                 <div></div>
                 <div>
                     <label for="tanggal">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal') }}" class="border-0 focus:ring-0 focus:outline-0">
+                    <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal') ?? $schedule['tanggal'] }}" class="border-0 focus:ring-0 focus:outline-0">
                 </div>
             </div>
             <button type="submit" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">

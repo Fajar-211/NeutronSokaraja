@@ -71,9 +71,26 @@ class JadwalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Schedule $schedule)
     {
-        //
+        Validator::make($request->all(), [
+            'pengajar' => 'required',
+            'mapel' => 'required',
+            'kelas' => 'required',
+            'jam' => 'required',
+            'tanggal' => 'required'
+        ], [
+            'required' => ':attribute wajib diisi'
+        ]
+        )->validate();
+        $schedule->update([
+            'pengajar_id' => $request->pengajar,
+            'mapel_id' => $request->mapel,
+            'kelas_id' => $request->kelas,
+            'jam_id' => $request->jam,
+            'tanggal' => $request->tanggal
+        ]);
+        return redirect('jadwal')->with(['berhasil' => 'Schedule berhasil diupdate']);
     }
 
     /**
