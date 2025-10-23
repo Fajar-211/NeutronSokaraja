@@ -12,7 +12,7 @@
             <div class="ml-10 flex items-baseline space-x-4">
               <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
               <x-user-navlink href="/home" :current="request()->is('home')">Home</x-user-navlink>
-              <x-user-navlink href="/absent" :current="request()->is('absent')">Absent</x-user-navlink>
+              <x-user-navlink href="/absent" :current="request()->is('absent')">Presence</x-user-navlink>
               <x-user-navlink href="/score" :current="request()->is('score')">Score</x-user-navlink>
               <x-user-navlink href="/schedule" :current="request()->is('schedule')">Schedule</x-user-navlink>
             </div>
@@ -66,7 +66,7 @@
       <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
               <x-user-navlink href="/home" :current="request()->is('home')">Home</x-user-navlink>
-              <x-user-navlink href="/absent" :current="request()->is('absent')">Absent</x-user-navlink>
+              <x-user-navlink href="/absent" :current="request()->is('absent')">presence</x-user-navlink>
               <x-user-navlink href="/score" :current="request()->is('score')">Score</x-user-navlink>
               <x-user-navlink href="/schedule" :current="request()->is('schedule')">Schedule</x-user-navlink>
       </div>
