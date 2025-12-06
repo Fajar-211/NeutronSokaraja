@@ -40,6 +40,20 @@
                                 <div class="mt-2 text-xs text-red-600 dark:text-red-500">{{ $message }}</div>
                             @enderror
                     </div>
+                    <div class="sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kelas</label>
+                        <div class="grid grid-cols-5 gap-2.5">
+                            @foreach (App\Models\Kelas::get() as $kelas)
+                                <div class="flex items-center w-full">
+                                    <input id="checkbox-{{ $kelas['id'] }}" type="checkbox" name="kelas[]" value="{{ $kelas['id'] }}" {{ in_array($kelas->id, old('kelas', [])) ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="checkbox-{{ $kelas['id'] }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $kelas['kelas'] }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                            @error('kelas')
+                                <div class="mt-2 text-xs text-red-600 dark:text-red-500">{{ $message }}</div>
+                            @enderror
+                    </div>
                     {{-- <div class="sm:col-span-2">
                         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                         <textarea id="description" rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write a description...">Standard glass, 3.8GHz 8-core 10th-generation Intel Core i7 processor, Turbo Boost up to 5.0GHz, 16GB 2666MHz DDR4 memory, Radeon Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD storage, Gigabit Ethernet, Magic Mouse 2, Magic Keyboard - US</textarea>                    

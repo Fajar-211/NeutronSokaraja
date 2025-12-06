@@ -11,8 +11,7 @@ class Kelas extends Model
 {
     /** @use HasFactory<\Database\Factories\KelasFactory> */
     use HasFactory;
-    protected $fillable = ['kelas', 'category_id'];
-    protected $with = ['category'];
+    protected $fillable = ['kelas'];
         public function siswa(): HasMany
     {
         return $this->hasMany(Siswa::class, 'kelas_id');
@@ -21,12 +20,8 @@ class Kelas extends Model
     {
         return $this->hasMany(Absensi::class, 'kelas_id');
     }
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, 'category_id');
-    }
-    public function jadwal(): HasMany
-    {
-        return $this->hasMany(Schedule::class, 'kelas_id');
-    }
+    public function wali()
+{
+    return $this->hasOne(pivot_user_kelas::class, 'kelas_id');
+}
 }

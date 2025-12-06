@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\pivot_user_kelas;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -40,6 +41,7 @@ class PengajarController extends Controller
             'name' => 'required|max:25|string',
             'email' => 'required|string|email|max:255|unique:'.User::class,
             'mapel' => 'required|array|min:1',
+            'kelas' => 'required|array|min:1',
             // 'mapel.*'   => 'exists:mapels,id',
         ],[
             'required' => ':attribute wajib diisi',
@@ -48,6 +50,8 @@ class PengajarController extends Controller
             'unique' => 'email sudah terdaftar',
             'mapel.required' => 'Minimal pilih 1 mata pelajaran.',
             'mapel.min'      => 'Minimal pilih 1 mata pelajaran.',
+            'kelas.required' => 'Minimal pilih 1 kelas.',
+            'kelas.min'      => 'Minimal pilih 1 kelas.',
         ])->validate();
         $user = User::create([
             'name' => $request->name,
@@ -59,6 +63,12 @@ class PengajarController extends Controller
             'remember_token' => Str::random(10),
         ]);
         $user->mengajar()->attach($request->mapel);
+        foreach ($request->kelas as $kelas_id) {
+            pivot_user_kelas::create([
+                'user_id' => $user->id,
+                'kelas_id' => $kelas_id
+            ]);
+        }
         return redirect('dashboard')->with(['berhasil' => 'Pengajar baru berhasil ditambahkan']);
     }
 

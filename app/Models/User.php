@@ -70,8 +70,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Absensi::class, 'user_id');
     }
-    public function jadwal(): HasMany
+    public function wali(): HasMany
     {
-        return $this->hasMany(Schedule::class, 'pengajar_id');
+        return $this->hasMany(pivot_user_kelas::class, 'user_id');
     }
 }

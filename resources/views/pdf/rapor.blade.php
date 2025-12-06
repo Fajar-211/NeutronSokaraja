@@ -134,107 +134,66 @@
             <td>: {{ $siswa->kelas->kelas }}</td>
         </tr>
     </table>
-
-    <!-- Nilai UTBK -->
-    @if ($siswa->kelas->category['category'] == 'kelas besar')
-        <h2>Hasil Tryout UTBK</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>UTBK</th>
-                    <th>Nilai</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($siswa->note->score as $score)
-                    <tr>
-                        <td>{{ $score->utbk->utbk }}</td>
-                        <td>{{ $score->score }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
-
     <!-- Hasil Evaluasi -->
     <h2>Hasil Evaluasi</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Mapel</th>
-                    @php 
-                        $nilaiGrouped = $siswa->nilai->groupBy('mapel_id'); 
-                        $maxNilai = $nilaiGrouped->max(fn($g) => $g->count()); 
-                    @endphp
-                    @for ($i=1; $i <= $maxNilai; $i++)
-                        <th>Evaluasi {{ $i }}</th>
-                    @endfor
-                    <th>Catatan</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($nilaiGrouped as $mapelId => $nilaiList)
-                    <tr>
-                        <td>{{ $nilaiList->first()->mapel->nama_mapel }}</td>
-                        
-                        {{-- nilai evaluasi --}}
-                        @foreach ($nilaiList as $n)
-                            <td>{{ $n->nilai }}</td>
-                        @endforeach
+    @php
+        // Group nilai per mapel
+        $nilaiGrouped = $siswa->nilai->groupBy('mapel_id');
 
-                        {{-- kalau jumlah evaluasi mapel ini kurang dari max, tambahin kolom kosong --}}
-                        @for ($i = $nilaiList->count(); $i < $maxNilai; $i++)
-                            <td></td>
-                        @endfor
+        // Ambil jumlah max evaluasi antar mapel
+        $maxNilai = $nilaiGrouped->max(fn($g) => $g->count());
 
-                        {{-- catatan khusus mapel ini --}}
-                        <td>
-                            @php
-                                // gabung semua catatan mapel ini jadi satu string (kalau lebih dari satu evaluasi)
-                                $catatan = $nilaiList->pluck('catatan')->filter()->implode(', ');
-                            @endphp
-                            {{ $catatan }}
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        // Hitung jumlah hadir per mapel
+        $rekapHadir = $hadir->groupBy('mapel_id')->map->count();
+        $rekapTidakHadir = $tidak->groupBy('mapel_id')->map->count();
+    @endphp
 
-    <!-- Kehadiran -->
-    <h2>Rekap Kehadiran</h2>
     <table class="table">
         <thead>
             <tr>
                 <th>Mapel</th>
-                <th>Hadir</th>
+
+                @for ($i=1; $i <= $maxNilai; $i++)
+                    <th>{{ $i }}</th>
+                @endfor
+
+                <th>Jml Pertemuan</th>
+                <th>Jml Hadir</th>
+                <th>%</th>
             </tr>
         </thead>
+
         <tbody>
-            @php 
-                $rekapHadir = $hadir->groupBy('mapel_id')->map->count();
-            @endphp
             @foreach ($siswa->mengambil as $mapel)
+                @php
+                    $nilaiList = $nilaiGrouped[$mapel->id] ?? collect([]);
+                    $jumlahHadir = $rekapHadir[$mapel->id] ?? 0;
+                    $jumlahTidakHadir = $rekapTidakHadir[$mapel->id] ?? 0;
+                    $jumlahPertemuan = $jumlahHadir + $jumlahTidakHadir;
+                    $persen = $jumlahPertemuan ? round(($jumlahHadir / $jumlahPertemuan) * 100) : 0;
+                @endphp
+
                 <tr>
                     <td>{{ $mapel->nama_mapel }}</td>
-                    <td>{{ $rekapHadir[$mapel->id] ?? 0 }}</td>
+
+                    {{-- isi nilai evaluasi --}}
+                    @foreach ($nilaiList as $n)
+                        <td>{{ $n->nilai }}</td>
+                    @endforeach
+
+                    {{-- jika jumlah kurang dari max --}}
+                    @for ($i = $nilaiList->count(); $i < $maxNilai; $i++)
+                        <td></td>
+                    @endfor
+
+                    {{-- tabel attendance --}}
+                    <td>{{ $jumlahPertemuan }}</td>
+                    <td>{{ $jumlahHadir }}</td>
+                    <td>{{ $persen }}%</td>
                 </tr>
             @endforeach
         </tbody>
-        <tfoot>
-            <tr>
-                <th>Total</th>
-                <td>{{ $hadir->count() }}</td>
-            </tr>
-        </tfoot>
     </table>
-
-    <!-- Catatan -->
-    @if ($siswa->kelas->category['category'] == 'kelas besar')
-        <div class="notes">
-            <p class="italic" style="color: red" >Catatan*</p>
-            {{ $siswa->note->catatan }}
-        </div>
-    @endif
 
     <!-- Tanda tangan -->
     <!-- Tanda tangan -->
@@ -250,5 +209,39 @@
             </td>
         </tr>
     </table>
+    <div style="page-break-before: always;"></div>
+
+<h2>Detail Kehadiran</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Mapel</th>
+            <th>Absensi</th>
+            <th>Tanggal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @php
+            $jml = 1;
+        @endphp
+        @foreach ($listAbsensi as $absen)
+        @php
+            $tgl = \Carbon\Carbon::parse($absen->tanggal)->translatedFormat('d F Y');
+        @endphp
+        <tr>
+            <td>{{ $jml }}</td>
+            <td>{{ $absen->mapel->nama_mapel ?? '-' }}</td>
+            <td>{{ ucfirst($absen->absensi) }}</td>
+            <td>{{ $tgl }}</td>
+        </tr>
+        @php
+            $jml ++;
+        @endphp
+        @endforeach
+    </tbody>
+</table>
+
 </body>
 </html>

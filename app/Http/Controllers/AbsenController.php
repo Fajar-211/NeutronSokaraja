@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Siswa;
+use App\Models\TemporaryNilai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -52,13 +53,14 @@ class AbsenController extends Controller
         })->orderBy('nama', 'asc')->get();
         $kelas = Kelas::select('kelas')->where('id' ,'=', $kelas_id)->get();
         $mapel = Mapel::where('id', '=', $mapel_id)->get();
-        return view('user.absentCreate', ['header' => 'Absence from ', 'siswa' => $siswas , 'kelas' => $kelas, 'mapel' => $mapel]);
+        $temporarySiswaIds = TemporaryNilai::where('user_id', $pengajar)->pluck('siswa_id')->toArray();
+        return view('user.absentCreate', ['header' => 'Absence from ', 'siswa' => $siswas , 'kelas' => $kelas, 'mapel' => $mapel, 'temporarySiswaIds' => $temporarySiswaIds,]);
     }
 
     public function Showmap(Kelas $kelas)
     {
         $user = Auth::user();
-
+        $pengajar = Auth::user()->id;
         $mapels = $user->mengajar()
             ->whereHas('diambil', function ($q) use ($kelas) {
                 $q->where('siswas.kelas_id', $kelas->id);
@@ -68,7 +70,6 @@ class AbsenController extends Controller
                     $q->where('siswas.kelas_id', $kelas->id);
                 }
             ])->get();
-
         return view('user.absentshowmapel', [
             'header' => 'Select mapel in class ' . $kelas->kelas,
             'mapels' => $mapels,
@@ -79,7 +80,50 @@ class AbsenController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    //khusus SMA BANYUMAS
+    public function store1(Request $request){
+        $pengajar = Auth::id();
+        $semuaSiswa = $request->input('all', []);
+        $siswaHadir = $request->input('siswa', []);
+        Validator::make($request->all(), [
+            'tanggal' => 'required',
+            'sumary'  => 'required|max:200',
+        ],[
+            'required' => ':attribute wajib diisi',
+            'max'      => ':attribute maksimal 200 karakter',
+        ])->validate();
+        $temporaryKosong = !TemporaryNilai::where('user_id', $pengajar)->exists();
+        if ($temporaryKosong) {
+            foreach ($semuaSiswa as $siswaId) {
+                $status = in_array($siswaId, $siswaHadir) ? 'hadir' : 'tidak hadir';
+                TemporaryNilai::create([
+                    'user_id'  => $pengajar,
+                    'siswa_id' => $siswaId,
+                    'mapel_id' => $request->mapel,
+                    'tanggal'  => $request->tanggal,
+                    'absensi'  => $status,
+                    'sumary'   => $request->sumary,
+                ]);
+            }
+            return redirect('absent')->with('berhasil', 'Data absensi tersimpan sementara');
+        }
+        foreach ($semuaSiswa as $siswaId) {
+            $status = in_array($siswaId, $siswaHadir) ? 'hadir' : 'tidak hadir';
+            Absensi::create([
+                'user_id'  => $pengajar,
+                'siswa_id' => $siswaId,
+                'mapel_id' => $request->mapel,
+                'tanggal'  => $request->tanggal,
+                'absensi'  => $status,
+                'sumary'   => $request->sumary,
+            ]);
+        }
+        TemporaryNilai::where('user_id', $pengajar)->delete();
+        return redirect('absent')->with('berhasil', 'Absensi berhasil');
+    }
+
+
+    public function store2(Request $request)
     {
         $siswa = $request->siswa;
         Validator::make($request->all(), [

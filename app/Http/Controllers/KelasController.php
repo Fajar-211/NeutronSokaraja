@@ -31,16 +31,14 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         Validator::make($request->all(),[
-            'kelas' => 'required|string|unique:'.Kelas::class,
-            'category' => 'required'
+            'kelas' => 'required|string|unique:'.Kelas::class
         ],[
             'required' => ':attribute wajib diisi',
             'unique' => 'Kelas sudah ada',
             'string' => 'Hanya string'
         ])->validate();
         Kelas::create([
-            'kelas' => $request->kelas,
-            'category_id' => $request->category
+            'kelas' => $request->kelas
         ]);
         return redirect('kelas')->with(['berhasil' => 'Kelas berhasil ditambah']);
     }

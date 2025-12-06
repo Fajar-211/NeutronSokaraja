@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class UserSiswaController extends Controller
 {
@@ -19,17 +20,24 @@ class UserSiswaController extends Controller
         // ambil semua mapel_id yang dia ampu
         $mapelIds = $pengajar->mengajar()->pluck('mapels.id');
 
+        $kelasIds = Auth::user()->wali()->pluck('kelas_id');
+
+        $siswasWali = Siswa::whereIn('kelas_id', $kelasIds);
+        // if(request('nama')){
+        //     $siswasWali = $siswasWali->where('nama', request('nama'));
+        // }
+        $listWali = $siswasWali->orderBy('nama', 'asc')->get();
         // query siswa yang ngambil mapel itu
-        $siswas = \App\Models\Siswa::whereHas('mengambil', function ($q) use ($mapelIds) {
+        $siswas = Siswa::whereHas('mengambil', function ($q) use ($mapelIds) {
             $q->whereIn('mapel_id', $mapelIds);
         })->distinct();
         if(request('nama')){
-            $siswas = \App\Models\Siswa::whereHas('mengambil', function ($q) use ($mapelIds) {
+            $siswas = Siswa::whereHas('mengambil', function ($q) use ($mapelIds) {
             $q->whereIn('mapel_id', $mapelIds);
         })->where('nama', '=', request('nama'))->distinct();
         }
         $jml = $siswas->count();
-    return view('user.home', ['header' => 'home', 'pengajar' => Auth::user(), 'mapels' => $pengajar->mengajar()->get(), 'siswas' => $siswas->orderBy('nama', 'asc')->paginate(15)->withQueryString(), 'jumlah' => $jml]);
+        return view('user.home', ['header' => 'home', 'pengajar' => Auth::user(), 'mapels' => $pengajar->mengajar()->get(), 'siswas' => $siswas->orderBy('nama', 'asc')->paginate(15)->withQueryString(), 'jumlah' => $jml , 'wali' => $listWali]);
     }
 
     /**

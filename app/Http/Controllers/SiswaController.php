@@ -28,6 +28,8 @@ class SiswaController extends Controller
     }
     public function download(Siswa $siswa)
     {
+        $siswa->load(['nilai.mapel', 'kelas']);
+        $listAbsensi = Absensi::with('mapel')->where('siswa_id', $siswa->id)->orderBy('tanggal', 'asc')->get();
         // ambil data absensi
         $hadir = Absensi::where('siswa_id', $siswa->id)->where('absensi', 'hadir')->get();
 
@@ -40,6 +42,7 @@ class SiswaController extends Controller
             'siswa' => $siswa,
             'hadir' => $hadir,
             'tidak' => $tidak,
+            'listAbsensi' => $listAbsensi,
             'bulan' => $arr[1],
             'tahun' => $arr[2]
         ])->setPaper('A4', 'portrait');
@@ -73,11 +76,6 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        $kelas = $request->kelas;
-        $mpl = Kelas::where('id', '=', $kelas)->get('category_id');
-        $category = Category::where('category', '=', 'kelas besar')->get('id');
-        $category = $category->toArray();
-        $mpl = $mpl->toArray();
         Validator::make($request->all(),[
             'nama' => 'required',
             'nis' => 'required|unique:'.Siswa::class,
@@ -97,9 +95,6 @@ class SiswaController extends Controller
             'kelas_id' => $request->kelas
         ]);
         $siswa->mengambil()->attach($request->mapel);
-        if ($mpl[0]['category_id'] == $category[0]['id']) {
-            $siswa->note()->create();
-        }
         return redirect('siswa')->with(['berhasil' => 'Siswa berhasil ditambah']);
     }
 
@@ -129,11 +124,6 @@ class SiswaController extends Controller
      */
     public function update(Request $request, Siswa $siswa)
     {
-        $kelas = $request->kelas;
-        $mpl = Kelas::where('id', '=', $kelas)->get('category_id');
-        $category = Category::where('category', '=', 'kelas besar')->get('id');
-        $category = $category->toArray();
-        $mpl = $mpl->toArray();
         Validator::make($request->all(),[
             'nama' => 'required',
             'nis' => 'required|unique:siswas,nis,'.$siswa->id,
@@ -152,12 +142,6 @@ class SiswaController extends Controller
             'sekolah' => $request->sekolah,
             'kelas_id' => $request->kelas
         ]);
-        $siswa->mengambil()->sync($request->mapel);
-        if ($mpl[0]['category_id'] == $category[0]['id']) {
-            $siswa->note()->create();
-        }else{
-            $siswa->note()->delete();
-        }
         return redirect('siswa')->with(['berhasil' => $siswa->nama . ' berhasil diupdate']);
     }
 

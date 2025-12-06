@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('utbkscores', function (Blueprint $table) {
+        Schema::create('pivot_user_kelas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('peserta_id')->constrained(
-                table: 'notes', indexName: 'utbkscores_note_id'
+            $table->foreignId('user_id')->constrained(
+                table: 'users', indexName: 'pivot_user_id'
             );
-            $table->foreignId('utbk_id')->constrained(
-                table: 'utbks', indexName: 'utbkscores_utbk_id'
+            $table->foreignId('kelas_id')->constrained(
+                table: 'kelas', indexName: 'pivot_kelas_id'
             );
-            $table->decimal('score')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('utbkscores');
+        Schema::dropIfExists('pivot_user_kelas');
     }
 };

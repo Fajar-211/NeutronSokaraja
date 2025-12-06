@@ -28,8 +28,7 @@ class MapelController extends Controller
      */
     public function create()
     {
-        $categoryMapels = Category::where('category', '=', 'kelas kecil')->get();
-        return view('mapelCreate', ['categories' => $categoryMapels]);
+        return view('mapelCreate');
     }
 
     /**

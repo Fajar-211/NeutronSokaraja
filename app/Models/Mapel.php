@@ -30,8 +30,4 @@ class Mapel extends Model
     {
         return $this->hasMany(Absensi::class, 'mapel_id');
     }
-    public function jadwal(): HasMany
-    {
-        return $this->hasMany(Schedule::class, 'mapel_id');
-    }
 }

@@ -17,19 +17,6 @@
                             <div class="mt-2 text-xs text-red-600 dark:text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="flex gap-5">
-                        @foreach (App\Models\Category::get() as $mapel)
-                            <div class="flex items-center mb-4">
-                                <input id="country-option-2" type="radio" name="category" value="{{ $mapel['id'] }}" class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="country-option-2" class="@error('category') text-red-900 @enderror block ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                {{ $mapel['category'] }}
-                                </label>
-                            </div>
-                        @endforeach
-                        @error('category')
-                            <div class="my-2 text-xs text-red-600 dark:text-red-500">{{ $message }}</div>
-                        @enderror
-                    </div>
                 </div>
                 <button type="submit" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                     <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

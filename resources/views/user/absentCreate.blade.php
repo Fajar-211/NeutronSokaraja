@@ -10,7 +10,7 @@
         endforeach
     @endphp
     <x-slot:header>{{ $header . $mpl[0] . ' in class ' . $kls[0]}}</x-slot:header>
-    <x-user.absencreate :siswas='$siswa' :mapels='$mapel'></x-user.absencreate>
+    <x-user.absencreate :siswas='$siswa' :mapels='$mapel' :kelas='$kls[0]' :temporarySiswaIds='$temporarySiswaIds'></x-user.absencreate>
     @push('date')
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     @endpush

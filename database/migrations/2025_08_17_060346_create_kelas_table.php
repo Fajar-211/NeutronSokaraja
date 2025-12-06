@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
             $table->string('kelas')->unique();
-            $table->foreignId('category_id')->constrained(
-                table: 'categories', indexName: 'kelas_category_id'
-            );
             $table->timestamps();
         });
     }

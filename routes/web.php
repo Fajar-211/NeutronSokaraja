@@ -28,7 +28,7 @@ Route::middleware(['auth', 'verified', 'is_user'])->group(function(){
 
     Route::get('/absent', [AbsenController::class, 'index']);
     Route::get('/absent/create/{kelas:id}', [AbsenController::class, 'showmap']);
-    Route::post('/absent', [AbsenController::class, 'store']);
+    Route::post('/absent', [AbsenController::class, 'store2']);
     
     Route::get('/score/create/utbk', [ScoreController::class, 'utbkIndex']);
     Route::patch('/score/create/utbk', [ScoreController::class, 'notecreate']);
@@ -38,12 +38,13 @@ Route::middleware(['auth', 'verified', 'is_user'])->group(function(){
     Route::get('/score/create', [ScoreController::class, 'create']);
     Route::get('/score/insert/{siswa:slug}', [ScoreController::class, 'insert']);
     Route::post('/score', [ScoreController::class, 'store']);
-
-    Route::get('/schedule', [UserJadwalController::class, 'index']);
-    
     Route::patch('/user/{user:slug}', [UserprofilController::class, 'update']);
 
     Route::get('/absent/create', [AbsenController::class, 'create']);
+
+    Route::post('/absentBMS', [AbsenController::class, 'store1']);
+
+    Route::get('/prev/{siswa:nis}', [SiswaController::class, 'download']);
 
     Route::get('/user/{user:slug}/edit', [UserprofilController::class, 'edit']);
 });
@@ -84,23 +85,6 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::delete('/siswa/{siswa:nis}', [SiswaController::class, 'destroy']);
     Route::get('/siswa/{siswa:nis}', [SiswaController::class, 'show']);
 
-    Route::get('/category', [categoryController::class, 'index'])->name('category');
-    Route::get('/category/create', [categoryController::class, 'create']);
-    Route::post('/category', [categoryController::class, 'store']);
-    Route::delete('/category/{category:slug}', [categoryController::class, 'destroy']);
-
-    Route::get('/utbk', [UtbkController::class, 'index'])->name('utbk');
-    Route::delete('/utbk/drop', [UtbkController::class, 'Drop']);
-    Route::get('/utbk/create', [UtbkController::class, 'create']);
-    Route::post('/utbk', [UtbkController::class, 'store']);
-    Route::delete('/utbk/{utbk:utbk}', [UtbkController::class, 'destroy']);
-    Route::get('/utbk/createScore', [UtbkController::class, 'createScore']);
-    Route::post('/utbk/score', [UtbkController::class, 'storescore']);
-    Route::get('/utbk/{utbk:utbk}/edit', [UtbkController::class, 'edit']);
-    Route::patch('/utbk/{utbk:utbk}', [UtbkController::class, 'update']);
-    Route::patch('/utbkscore/{siswa:slug}', [UtbkController::class, 'editscore']);
-    Route::post('/utbkscore/create/{siswa:slug}', [UtbkController::class, 'utbk']);
-
     Route::get('/absensi', [DropabsentController::class, 'index'])->name('absensi');
     Route::delete('/absensi/delete', [DropabsentController::class, 'Drop']);
     Route::get('/absensi/{absensi:id}/edit', [DropabsentController::class, 'edit']);
@@ -112,23 +96,10 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::patch('/nilai/{nilai:id}', [DropnilaiController::class, 'update']);
     Route::delete('/nilai/{nilai:id}', [DropnilaiController::class, 'destroy']);
 
-    Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal');
-    Route::get('/jadwal/jam/create', [JamController::class, 'create']);
-    Route::post('/jadwal/jam/add', [JamController::class, 'store']);
-    Route::get('/jadwal/{jam}/edit', [JamController::class, 'edit']);
-    Route::patch('/jadwal/{jam}', [JamController::class, 'update']);
-    Route::delete('/jadwal/{jam}', [JamController::class, 'destroy']);
-    Route::get('/jadwal/create', [JadwalController::class, 'create']);
-    Route::post('/jadwal', [JadwalController::class, 'store']);
-    Route::delete('/jadwal/{schedule}/hapus', [JadwalController::class, 'destroy']);
-    Route::get('/edit/{schedule}', [JadwalController::class, 'edit']);
-    Route::patch('/update/{schedule}', [JadwalController::class, 'update']);
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Route::get('/download/all', [SiswaController::class, 'all']);
     Route::get('/download/{siswa:nis}', [SiswaController::class, 'download']);
 
     Route::patch('/reset/{user:slug}', [ResetPassController::class, 'update']);

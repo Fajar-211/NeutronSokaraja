@@ -31,8 +31,4 @@ class Siswa extends Model
     {
         return $this->hasMany(Nilai::class, 'siswa_id');
     }
-    public function note(): HasOne
-    {
-        return $this->hasOne(Note::class, 'siswa_id');
-    }
 }

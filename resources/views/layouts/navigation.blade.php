@@ -18,14 +18,8 @@
                     <x-nav-link :href="route('mapel')" :active="request()->routeIs('mapel')">
                         {{ __('Mapel') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('utbk')" :active="request()->routeIs('utbk')">
-                        {{ __('UTBK') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('kelas')" :active="request()->routeIs('kelas')">
                         {{ __('Kelas') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('category')" :active="request()->routeIs('category')">
-                        {{ __('Kategori kelas') }}
                     </x-nav-link>
                     <x-nav-link :href="route('siswa')" :active="request()->routeIs('siswa')">
                         {{ __('Siswa') }}
@@ -35,9 +29,6 @@
                     </x-nav-link>
                     <x-nav-link :href="route('nilai')" :active="request()->routeIs('nilai')">
                         {{ __('Recap score') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('jadwal')" :active="request()->routeIs('jadwal')">
-                        {{ __('Schedule') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -100,12 +91,6 @@
             <x-responsive-nav-link :href="route('kelas')" :active="request()->routeIs('kelas')">
                 {{ __('Kelas') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('utbk')" :active="request()->routeIs('utbk')">
-                {{ __('UTBK') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('category')" :active="request()->routeIs('category')">
-                {{ __('Kategori kelas') }}
-            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('siswa')" :active="request()->routeIs('siswa')">
                 {{ __('Siswa') }}
             </x-responsive-nav-link>
@@ -114,9 +99,6 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('nilai')" :active="request()->routeIs('nilai')">
                 {{ __('Recap score') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('jadwal')" :active="request()->routeIs('jadwal')">
-                {{ __('Schedule') }}
             </x-responsive-nav-link>
         </div>
 

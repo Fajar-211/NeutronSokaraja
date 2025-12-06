@@ -7,15 +7,8 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Add Mapel</h3>
             </div>
             <!-- Modal body -->
-            @php
-                $categoryID;
-                foreach ($categories as $category):
-                    $categoryID = $category['id'];
-                endforeach;
-            @endphp
             <form action="/mapel" method="POST">
                 @csrf
-                <input type="hidden" name="category" value="{{ $categoryID }}">
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
                         <label for="nama_mapel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama mapel</label>

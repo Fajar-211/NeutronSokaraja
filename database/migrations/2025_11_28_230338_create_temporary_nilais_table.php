@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jams', function (Blueprint $table) {
+        Schema::create('temporary_nilais', function (Blueprint $table) {
             $table->id();
-            $table->time('start');
-            $table->time('end');
+            $table->foreignId('user_id');
+            $table->foreignId('siswa_id');
+            $table->foreignId('mapel_id');
+            $table->date('tanggal');
+            $table->string('absensi')->default('Tidak hadir');
+            $table->text('sumary');
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jams');
+        Schema::dropIfExists('temporary_nilais');
     }
 };

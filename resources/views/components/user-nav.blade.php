@@ -14,7 +14,6 @@
               <x-user-navlink href="/home" :current="request()->is('home')">Home</x-user-navlink>
               <x-user-navlink href="/absent" :current="request()->is('absent')">Presence</x-user-navlink>
               <x-user-navlink href="/score" :current="request()->is('score')">Score</x-user-navlink>
-              <x-user-navlink href="/schedule" :current="request()->is('schedule')">Schedule</x-user-navlink>
             </div>
           </div>
         </div>
@@ -68,7 +67,6 @@
               <x-user-navlink href="/home" :current="request()->is('home')">Home</x-user-navlink>
               <x-user-navlink href="/absent" :current="request()->is('absent')">presence</x-user-navlink>
               <x-user-navlink href="/score" :current="request()->is('score')">Score</x-user-navlink>
-              <x-user-navlink href="/schedule" :current="request()->is('schedule')">Schedule</x-user-navlink>
       </div>
       <div class="border-t border-white/10 pt-4 pb-3">
         <div class="flex items-center px-5">

@@ -80,7 +80,7 @@
 </div>
 <!-- End Hero -->
 <!-- Start block -->
-<section class="bg-whit dark:bg-gray-900 antialiased">
+<section class=" antialiased">
     <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
         <!-- Start coding here -->
         <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -93,9 +93,9 @@
                             <th scope="col" class="px-4 py-3">Class</th>
                             <th scope="col" class="px-4 py-3">School</th>
                             <th scope="col" class="px-4 py-3">NIS</th>
-                            <th scope="col" class="px-4 py-3">
+                            {{-- <th scope="col" class="px-4 py-3">
                                 <span class="sr-only">Actions</span>
-                            </th>
+                            </th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -106,6 +106,71 @@
                             <td class="px-4 py-3">{{ $siswa->kelas->kelas }}</td>
                             <td class="px-4 py-3 max-w-[12rem] truncate">{{ $siswa['sekolah'] }}</td>
                             <td class="px-4 py-3">{{ $siswa['nis'] }}</td>
+                            {{-- <td class="px-4 py-3 flex items-center justify-end">
+                                <button id="apple-imac-{{ $siswa['id'] }}-dropdown-button" data-dropdown-toggle="apple-imac-{{ $siswa['id'] }}-dropdown" class="inline-flex items-center text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 dark:hover-bg-gray-800 text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
+                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                                </button>
+                                <div id="apple-imac-{{ $siswa['id'] }}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                    <ul class="py-1 text-sm" aria-labelledby="apple-imac-27-dropdown-button">
+                                        <li>
+                                            <button type="button" data-modal-target="readProductModal" data-modal-toggle="readProductModal" class="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200">
+                                                <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                </svg>
+                                                Preview
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td> --}}
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @if ($siswas->hasPages())
+            <div class="my-1.5 px-3">
+                {{ $siswas->links() }}
+            </div>
+            @endif
+        </div>
+    </div>
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-12 my-10">
+        <!-- Start coding here -->
+        <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-4">#</th>
+                            <th scope="col" class="px-4 py-3">Name</th>
+                            <th scope="col" class="px-4 py-3">Class</th>
+                            <th scope="col" class="px-4 py-3">School</th>
+                            <th scope="col" class="px-4 py-3">NIS</th>
+                            <th scope="col" class="px-4 py-3"></th>
+                            {{-- <th scope="col" class="px-4 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($childs as $siswa)
+                            <tr class="border-b dark:border-gray-700">
+                            <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $loop->iteration + ($siswas->firstItem() - 1) }}</th>
+                            <td class="px-4 py-3">{{ $siswa['nama'] }}</td>
+                            <td class="px-4 py-3">{{ $siswa->kelas->kelas }}</td>
+                            <td class="px-4 py-3 max-w-[12rem] truncate">{{ $siswa['sekolah'] }}</td>
+                            <td class="px-4 py-3">{{ $siswa['nis'] }}</td>
+                            <td class="px-4 py-3">
+                                <div class="max-w-max overflow-hidden mx-auto">
+                                    <a href="/prev/{{ $siswa['nis'] }}" class="text-black mx-auto">
+                                        <svg class="w-6 h-6 fill-current" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="bg-slate-600" d="M12 2a1 1 0 0 1 1 1v10.586l2.293-2.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L11 13.586V3a1 1 0 0 1 1-1zM5 17a1 1 0 0 1 1 1v2h12v-2a1 1 0 1 1 2 0v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a1 1 0 0 1 1-1z"/></svg>
+                                    </a>
+                                </div>
+                            </td>
                             {{-- <td class="px-4 py-3 flex items-center justify-end">
                                 <button id="apple-imac-{{ $siswa['id'] }}-dropdown-button" data-dropdown-toggle="apple-imac-{{ $siswa['id'] }}-dropdown" class="inline-flex items-center text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 dark:hover-bg-gray-800 text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
