@@ -70,8 +70,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Absensi::class, 'user_id');
     }
-    public function wali(): HasMany
+    public function wali(): BelongsToMany
     {
-        return $this->hasMany(pivot_user_kelas::class, 'user_id');
+        return $this->belongsToMany(Kelas::class, 'pivot_user_kelas', 'user_id', 'kelas_id');
     }
 }

@@ -11,7 +11,6 @@
     <!-- Card -->
     @foreach ($kelases as $kelas)
     <div class="flex flex-col hover:border-2 hover:bg-slate-200 hover:border-blue-600 text-center border border-gray-200 hover:shadow-xl rounded-xl p-8 hover:dark:border-blue-700 group transition-all peer duration-150 delay-200">
-      <p class="mb-3 group-hover:inline opacity-0 transition-all transition-discrete group-hover:opacity-100 duration-150 delay-200"><span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-lg text-xs uppercase font-semibold group-hover:bg-{{ $kelas->category->color }}-100 group-hover:text-blue-800 dark:bg-blue-600 dark:text-white transition-all duration-150 delay-200">{{ $kelas->category->category }}</span></p>
       <h4 class="font-medium text-lg text-gray-800 dark:text-neutral-200">{{ $kelas['kelas'] }}</h4>
       <div class="max-w-max mx-auto">
           <div class="my-1 font-bold text-5xl text-gray-800 dark:text-neutral-200">

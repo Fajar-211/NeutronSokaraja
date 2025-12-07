@@ -15,9 +15,6 @@
           <li>
               <a href="/score" class="mr-4 hover:underline md:mr-6 ">Score</a>
           </li>
-          <li>
-              <a href="/schedule" class="mr-4 hover:underline md:mr-6 ">Schedule</a>
-          </li>
       </ul>
       <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 Neutron Sokaraja. All rights reserved.<br> <span class="text-xs text-slate-200">Site by Fajar Setiawan.</span></span>
   </div>

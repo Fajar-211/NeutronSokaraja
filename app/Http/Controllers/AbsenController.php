@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Absensi;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Siswa;
-use App\Models\TemporaryNilai;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
+use App\Models\TemporaryNilai;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -86,14 +87,13 @@ class AbsenController extends Controller
         $semuaSiswa = $request->input('all', []);
         $siswaHadir = $request->input('siswa', []);
         Validator::make($request->all(), [
-            'tanggal' => 'required',
-            'sumary'  => 'required|max:200',
-        ],[
-            'required' => ':attribute wajib diisi',
-            'max'      => ':attribute maksimal 200 karakter',
-        ])->validate();
-        $temporaryKosong = !TemporaryNilai::where('user_id', $pengajar)->exists();
-        if ($temporaryKosong) {
+                'tanggal' => 'required',
+                'sumary'  => 'required|max:200',
+            ],[
+                'required' => ':attribute wajib diisi',
+                'max'      => ':attribute maksimal 200 karakter',
+            ])->validate();
+        if($request->action == 'save'){
             foreach ($semuaSiswa as $siswaId) {
                 $status = in_array($siswaId, $siswaHadir) ? 'hadir' : 'tidak hadir';
                 TemporaryNilai::create([
@@ -106,57 +106,27 @@ class AbsenController extends Controller
                 ]);
             }
             return redirect('absent')->with('berhasil', 'Data absensi tersimpan sementara');
+        }else{
+            foreach ($semuaSiswa as $siswaId) {
+                $status = in_array($siswaId, $siswaHadir) ? 'hadir' : 'tidak hadir';
+                Absensi::create([
+                    'user_id'  => $pengajar,
+                    'siswa_id' => $siswaId,
+                    'mapel_id' => $request->mapel,
+                    'tanggal'  => $request->tanggal,
+                    'absensi'  => $status,
+                    'sumary'   => $request->sumary,
+                ]);
+            }
+        $hapus = TemporaryNilai::where('user_id', '=', Auth::user()->id)->where('mapel_id', '=', 1)->delete();
+        
+        return redirect('absent')->with(['berhasil' => 'Absensi berhasil']);
         }
-        foreach ($semuaSiswa as $siswaId) {
-            $status = in_array($siswaId, $siswaHadir) ? 'hadir' : 'tidak hadir';
-            Absensi::create([
-                'user_id'  => $pengajar,
-                'siswa_id' => $siswaId,
-                'mapel_id' => $request->mapel,
-                'tanggal'  => $request->tanggal,
-                'absensi'  => $status,
-                'sumary'   => $request->sumary,
-            ]);
-        }
-        TemporaryNilai::where('user_id', $pengajar)->delete();
-        return redirect('absent')->with('berhasil', 'Absensi berhasil');
     }
 
 
-    public function store2(Request $request)
-    {
-        $siswa = $request->siswa;
-        Validator::make($request->all(), [
-            // 'siswa' => 'required|array|min:1',
-            'tanggal' => 'required',
-            'sumary' => 'required|max:200'
-            // 'mapel.*'   => 'exists:mapels,id',
-        ],[
-            'required' => ':attribute wajib diisi',
-            'max' => ':attribute maksimal 200 karakter',
-            // 'siswa.required' => 'Minimal pilih 1 siswa.',
-            // 'siswa.min'      => 'Minimal pilih 1 siswa.',
-        ])->validate();
-        foreach ($request->all as $siswaId) {
-            if($siswa == null){
-                $status = 'tidak hadir';
-            }else{
-                if(in_array($siswaId, $siswa)){
-                    $status = 'hadir';
-                }else{
-                    $status = 'tidak hadir';
-                }
-            }
-            Absensi::create([
-                'user_id' => $request->pengajar,
-                'siswa_id'    => $siswaId,
-                'mapel_id' => $request->mapel,
-                'tanggal'     => $request->tanggal,
-                'absensi' => $status,
-                'sumary'     => $request->sumary,
-            ]);
-        }
-        return redirect('absent')->with(['berhasil' => 'Absensi berhasil']);
+    public function store2(Request $request){
+        
     }
 
     /**

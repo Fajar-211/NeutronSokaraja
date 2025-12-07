@@ -28,7 +28,7 @@ Route::middleware(['auth', 'verified', 'is_user'])->group(function(){
 
     Route::get('/absent', [AbsenController::class, 'index']);
     Route::get('/absent/create/{kelas:id}', [AbsenController::class, 'showmap']);
-    Route::post('/absent', [AbsenController::class, 'store2']);
+    Route::post('/absent', [AbsenController::class, 'store1']);
     
     Route::get('/score/create/utbk', [ScoreController::class, 'utbkIndex']);
     Route::patch('/score/create/utbk', [ScoreController::class, 'notecreate']);
@@ -42,7 +42,7 @@ Route::middleware(['auth', 'verified', 'is_user'])->group(function(){
 
     Route::get('/absent/create', [AbsenController::class, 'create']);
 
-    Route::post('/absentBMS', [AbsenController::class, 'store1']);
+    //Route::post('/absentBMS', [AbsenController::class, 'store1']);
 
     Route::get('/prev/{siswa:nis}', [SiswaController::class, 'download']);
 

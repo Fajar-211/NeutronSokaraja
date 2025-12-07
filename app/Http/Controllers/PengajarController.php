@@ -97,6 +97,7 @@ class PengajarController extends Controller
             'name' => 'required|max:25|string',
             'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'mapel' => 'required|array|min:1',
+            'kelas' => 'required|array|min:1',
         ],[
             'required' => ':attribute wajib diisi',
             'string' => ':attribute harus huruf',
@@ -104,6 +105,8 @@ class PengajarController extends Controller
             'unique' => 'email sudah terdaftar',
             'mapel.required' => 'Minimal pilih 1 mata pelajaran.',
             'mapel.min'      => 'Minimal pilih 1 mata pelajaran.',
+            'kelas.required' => 'Minimal pilih 1 kelas.',
+            'kelas.min'      => 'Minimal pilih 1 kelas.',
         ])->validate();
 
         // Update data user
@@ -115,6 +118,7 @@ class PengajarController extends Controller
 
         // Update pivot mapel → pakai sync biar overwrite data lama
         $user->mengajar()->sync($request->mapel);
+        $user->wali()->sync($request->kelas);
 
         return redirect('dashboard')->with(['berhasil' => 'Data pengajar berhasil diperbarui']);
     }
