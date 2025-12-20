@@ -18,38 +18,38 @@ class UserSeeder extends Seeder
         // Admin
         $admin = User::factory()->create([
             'name' => 'ADMIN 1',
-            'email' => 'nnybg@gmail.com',
+            'email' => 'ny.skrj@gmail.com',
             'slug' => Str::slug('ADMIN 1'),
             'is_admin' => true,
-            'password' => Hash::make('adamasahaddisini990')
+            'password' => Hash::make('password')
         ]);
         $admin = User::factory()->create([
             'name' => 'ADMIN 2',
-            'email' => 'kingjar@gmail.com',
+            'email' => 'neutron.happy@gmail.com',
             'slug' => Str::slug('ADMIN 2'),
             'is_admin' => true,
-            'password' => Hash::make('panggilakukingfajar551')
+            'password' => Hash::make('password')
         ]);
         $admin = User::factory()->create([
-            'name' => 'Ahadun',
-            'email' => 'ahad@gmail.com',
-            'slug' => Str::slug('Ahadun'),
+            'name' => 'admin3',
+            'email' => 'kantor.skrj@gmail.com',
+            'slug' => Str::slug('admin3'),
             'is_admin' => true,
-            'password' => Hash::make('1ahadun23')
+            'password' => Hash::make('password')
         ]);
         $admin = User::factory()->create([
-            'name' => 'Tri Santonso',
-            'email' => 'paktri3@gmail.com',
-            'slug' => Str::slug('Tri Santonso'),
+            'name' => 'admin4',
+            'email' => 'neutron.sokarja4@gmail.com',
+            'slug' => Str::slug('admin4'),
             'is_admin' => true,
-            'password' => Hash::make('1paktri23')
+            'password' => Hash::make('password')
         ]);
         $admin = User::factory()->create([
-            'name' => 'ARIYANTO TRI KUSUMO',
-            'email' => 'arie@gmail.com',
-            'slug' => Str::slug('ARIYANTO TRI KUSUMO'),
+            'name' => 'admin5',
+            'email' => 'fo.happyoffice@gmail.com',
+            'slug' => Str::slug('admin5'),
             'is_admin' => true,
-            'password' => Hash::make('1arie23')
+            'password' => Hash::make('password')
         ]);
         
 
