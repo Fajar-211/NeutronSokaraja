@@ -48,7 +48,6 @@ class SiswaController extends Controller
         ])->setPaper('A4', 'portrait');
 
         return $pdf->stream("rapor_{$siswa->nama}.pdf");
-
     }
 
     /**
@@ -57,7 +56,7 @@ class SiswaController extends Controller
     public function index()
     {
         $siswa = Siswa::query();
-        if(request('cari')){
+        if (request('cari')) {
             $siswa->where('nama', 'like', '%' . request('cari') . '%');
         }
         return view('siswa', ['siswas' => $siswa->orderBy('nama', 'asc')->paginate(20)->withQueryString()]);
@@ -76,18 +75,18 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        Validator::make($request->all(),[
+        Validator::make($request->all(), [
             'nama' => 'required',
-            'nis' => 'required|unique:'.Siswa::class,
+            'nis' => 'required|unique:' . Siswa::class,
             'sekolah' => 'required',
             'kelas' => 'required',
             'mapel' => 'required|array|min:1'
-        ],[
+        ], [
             'required' => ':attribute wajib diisi',
             'unique' => 'NIS sudah ada',
             'mapel.required' => 'Minimal pilih 1 mata pelajaran.'
         ])->validate();
-        $siswa= Siswa::create([
+        $siswa = Siswa::create([
             'nama' => $request->nama,
             'slug' => Str::slug($request->nama),
             'nis' => $request->nis,
@@ -108,7 +107,7 @@ class SiswaController extends Controller
         Carbon::setLocale('id');
         $tanggal = Carbon::now()->translatedFormat('d F Y');
         $arr = explode(' ', $tanggal);
-        return view('siswaShow',['siswa' => $siswa, 'hadir' => $hadir, 'tidak' => $tidak, 'bulan' => $arr[1], 'tahun' => $arr[2]]);
+        return view('siswaShow', ['siswa' => $siswa, 'hadir' => $hadir, 'tidak' => $tidak, 'bulan' => $arr[1], 'tahun' => $arr[2]]);
     }
 
     /**
@@ -124,13 +123,13 @@ class SiswaController extends Controller
      */
     public function update(Request $request, Siswa $siswa)
     {
-        Validator::make($request->all(),[
+        Validator::make($request->all(), [
             'nama' => 'required',
-            'nis' => 'required|unique:siswas,nis,'.$siswa->id,
+            'nis' => 'required|unique:siswas,nis,' . $siswa->id,
             'sekolah' => 'required',
             'kelas' => 'required',
             'mapel' => 'required|array|min:1'
-        ],[
+        ], [
             'required' => ':attribute wajib diisi',
             'unique' => 'NIS sudah ada',
             'mapel.required' => 'Minimal pilih 1 mata pelajaran.'
@@ -142,6 +141,7 @@ class SiswaController extends Controller
             'sekolah' => $request->sekolah,
             'kelas_id' => $request->kelas
         ]);
+        $siswa->mengambil()->sync($request->mapel);
         return redirect('siswa')->with(['berhasil' => $siswa->nama . ' berhasil diupdate']);
     }
 
@@ -151,7 +151,6 @@ class SiswaController extends Controller
     public function destroy(Siswa $siswa)
     {
         $siswa->mengambil()->detach();
-        $siswa->note()->delete();
         $siswa->nilai()->delete();
         $siswa->absen()->delete();
         $siswa->delete();
