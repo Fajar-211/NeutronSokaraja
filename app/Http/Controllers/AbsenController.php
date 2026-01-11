@@ -118,8 +118,8 @@ class AbsenController extends Controller
                     'absensi'  => $status,
                     'sumary'   => $request->sumary,
                 ]);
-                $hapus = TemporaryNilai::where('user_id', '=', Auth::user()->id)->where('mapel_id', '=', $request->mapel)->delete();
             }
+            $hapus = TemporaryNilai::where('user_id', '=', Auth::user()->id)->where('mapel_id', '=', $request->mapel)->delete();
             return redirect('absent')->with(['berhasil' => 'Absensi berhasil']);
         }
     }
