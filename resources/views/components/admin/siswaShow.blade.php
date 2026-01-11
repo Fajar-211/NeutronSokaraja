@@ -163,7 +163,8 @@
             <img src="{{ asset('img/n.png') }}" alt="Logo" class="w-30">
         </div>
         <div class="text-center">
-            <h1 class="text-lg font-bold uppercase relative"><img src="{{ asset('img/neu.png') }}" alt="Logo" class="w-5 absolute bottom-1">RAPOR</h1>
+            <h1 class="text-lg font-bold uppercase relative"><img src="{{ asset('img/neu.png') }}" alt="Logo"
+                    class="w-5 absolute bottom-1">RAPOR</h1>
             <p class="text-sm">Laporan Hasil Belajar</p>
         </div>
         <div class="text-right">
@@ -189,7 +190,7 @@
     </table>
 
     <!-- Nilai UTBK -->
-    @if ($siswa->kelas->category['category'] === 'kelas besar')
+    {{-- @if ($siswa->kelas->category['category'] === 'kelas besar')
     <h2 class="font-bold mb-2">Hasil Tryout Ujian Tulis Berbasis Komputer</h2>
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
@@ -214,7 +215,7 @@
                     </tr>
                 @endforeach
         </tbody>
-        {{-- <tfoot>
+        <tfoot>
             <tr class="font-semibold text-gray-900 dark:text-white">
                 <th scope="row" class="px-6 py-3 text-base">Total</th>
                 <td class="px-6 py-3">21,000</td>
@@ -223,9 +224,9 @@
                 <th scope="row" class="px-6 py-3 text-base">Average</th>
                 <td class="px-6 py-3">21,000</td>
             </tr>
-        </tfoot> --}}
+        </tfoot>
         </table>
-    @endif
+    @endif --}}
     <h2 class="font-bold mb-2">Hasil Evaluasi</h2>
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -253,7 +254,8 @@
             <tbody>
                 @foreach ($nilaiGrouped as $mapelId => $nilaiList)
                     <tr class="bg-white dark:bg-gray-800">
-                        <th scope="row" class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row"
+                            class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $nilaiList->first()->mapel->nama_mapel }}
                         </th>
                         @foreach ($nilaiList as $n)
@@ -291,7 +293,8 @@
                 @endphp
                 @foreach ($siswa->mengambil as $mapel)
                     <tr class="bg-white dark:bg-gray-800">
-                        <th scope="row" class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row"
+                            class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $mapel['nama_mapel'] }}
                         </th>
                         <td class="px-6 py-1">
